@@ -31,7 +31,7 @@ export default function AddTodoForm({ onAdd }: AddTodoFormProps) {
         className="input"
       />
       <button type="submit" className="button">
-        Add Task
+        ADD
       </button>
     </form>
   );

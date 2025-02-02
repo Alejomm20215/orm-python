@@ -1,72 +1,212 @@
+/* Enhanced Cyberpunk Todo List with Integrated Delete Button */
 :root {
-  --primary: #646cff;
-  --danger: #ff4757;
-  --border: #e0e0e0;
+  --bg-dark: #0a0a0a;
+  --neon-purple: #bc13fe;
+  --neon-cyan: #0ff0fc;
+  --neon-pink: #ff006e;
+  --text-primary: #e0e0e0;
+  --border-neon: rgba(188, 19, 254, 0.3);
+  --shadow-neon-purple: 0 0 25px rgba(188, 19, 254, 0.4);
+  --shadow-neon-cyan: 0 0 25px rgba(11, 240, 252, 0.4);
+  --scan-line: linear-gradient(
+    to bottom,
+    transparent 95%,
+    rgba(188, 19, 254, 0.05) 100%
+  );
+}
+
+body {
+  background: linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 100%),
+    var(--scan-line);
+  background-size: cover, 4px 4px;
+  min-height: 100vh;
+  color: var(--text-primary);
+  font-family: 'Courier New', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
 }
 
 .todo-list {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 1rem;
-  font-family: system-ui, sans-serif;
+  width: 95%;
+  max-width: 800px;
+  padding: 2.5rem;
+  border: 1px solid var(--border-neon);
+  border-radius: 8px;
+  box-shadow: var(--shadow-neon-purple);
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.todo-list::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(188, 19, 254, 0.1),
+    transparent
+  );
+  animation: list-glow 4s infinite;
+}
+
+@keyframes list-glow {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+h1 {
+  text-align: center;
+  color: var(--neon-purple);
+  text-shadow: 0 0 20px var(--neon-purple);
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 15px var(--neon-purple); }
+  to { text-shadow: 0 0 25px var(--neon-purple), 0 0 35px var(--neon-purple); }
 }
 
 .form {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   margin-bottom: 2rem;
 }
 
 .input {
   flex: 1;
-  padding: 0.8rem;
-  border: 2px solid var(--border);
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid var(--neon-purple);
   border-radius: 8px;
-  font-size: 1rem;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 10px rgba(188, 19, 254, 0.2);
+}
+
+.input:focus {
+  outline: none;
+  box-shadow: var(--shadow-neon-cyan), inset 0 0 15px rgba(11, 240, 252, 0.2);
+  border-color: var(--neon-cyan);
 }
 
 .button {
-  padding: 0.8rem 1.5rem;
-  background: var(--primary);
-  color: white;
+  padding: 1rem 2rem;
+  background: linear-gradient(to right, var(--neon-cyan), var(--neon-purple));
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: opacity 0.2s;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px var(--neon-purple);
 }
 
 .button:hover {
-  opacity: 0.9;
+  background: linear-gradient(to right, #0cdddf, #90f);
+  box-shadow: 0 0 30px var(--neon-purple);
 }
 
 .item {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1rem;
-  border: 1px solid var(--border);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-neon);
   border-radius: 8px;
-  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-neon-purple);
 }
 
 .item.completed .title {
   text-decoration: line-through;
-  opacity: 0.7;
+  color: rgba(188, 19, 254, 0.6);
+  position: relative;
+}
+
+.item.completed .title::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--neon-cyan);
+  transform: translateY(-50%);
+  opacity: 0.4;
 }
 
 .status-button {
   background: none;
   border: none;
+  color: var(--neon-cyan);
+  font-size: 1.5rem;
   cursor: pointer;
-  color: var(--primary);
-  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.status-button:hover {
+  text-shadow: 0 0 15px var(--neon-cyan);
 }
 
 .delete-button {
   margin-left: auto;
   background: none;
   border: none;
-  color: var(--danger);
+  color: var(--neon-purple);
+  font-size: 1.0rem;
   cursor: pointer;
-  padding: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transform-origin: center;
+}
+
+.delete-button:hover {
+  color: var(--neon-pink);
+  text-shadow: 0 0 15px var(--neon-pink);
+  transform: scale(1.1);
+}
+
+/* Enhanced animations */
+@keyframes border-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  .form {
+    flex-direction: column;
+  }
+  
+  .button {
+    width: 100%;
+  }
+  
+  .todo-list {
+    padding: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
 }
